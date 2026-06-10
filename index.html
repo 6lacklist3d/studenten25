@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>din present 🎀</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Fredoka:wght@500;600;700&family=Gloria+Hallelujah&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   EDIT NAMES & MESSAGE -> "CONFIG" block in the script below
+   ============================================================ */
+:root{--pink:#FF4FA3;--pink2:#FF8FC7;--hot:#FF2E8B;--lav:#C9A7FF;--baby:#A7D8FF;--gold:#FFC93C;--blush:#FFE3F1;--plum:#6E2B5E;}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+html,body{height:100%;overflow:hidden;}
+body{font-family:'Fredoka',system-ui,sans-serif;color:var(--plum);user-select:none;-webkit-user-select:none;touch-action:manipulation;background:linear-gradient(160deg,#FFE9F4 0%,#F6E3FF 50%,#E6F3FF 100%);}
+#app{position:fixed;inset:0;}
+.bgwrap{position:fixed;inset:0;z-index:0;overflow:hidden;transition:opacity .8s;}
+.blob{position:absolute;width:55vmax;height:55vmax;border-radius:50%;filter:blur(60px);opacity:.5;mix-blend-mode:multiply;animation:drift 16s ease-in-out infinite;transition:opacity .8s,filter .8s;}
+.blob.a{background:var(--pink2);top:-18%;left:-12%;}
+.blob.b{background:var(--lav);bottom:-22%;right:-18%;animation-delay:-6s;}
+.blob.c{background:var(--baby);top:38%;left:32%;animation-delay:-10s;}
+@keyframes drift{0%,100%{transform:translate(0,0) scale(1);}33%{transform:translate(9%,-7%) scale(1.12);}66%{transform:translate(-7%,9%) scale(.92);}}
+.bgemoji{position:absolute;bottom:-40px;font-size:26px;opacity:.35;animation:rise linear infinite;transition:opacity .8s;}
+@keyframes rise{to{transform:translateY(-115vh) rotate(40deg);opacity:0;}}
+body.calm .blob{opacity:.22;filter:blur(85px);}
+body.calm .bgemoji{opacity:.1;}
+.stage{position:absolute;inset:0;z-index:2;display:none;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:26px 20px;gap:18px;overflow-y:auto;}
+.stage.active{display:flex;animation:pop .42s cubic-bezier(.2,1.5,.4,1);}
+@keyframes pop{from{opacity:0;transform:scale(.85) rotate(-2deg);}to{opacity:1;transform:scale(1) rotate(0);}}
+h1{font-family:'Pacifico',cursive;line-height:1.12;color:var(--hot);text-shadow:0 3px 0 #fff,0 6px 16px rgba(255,79,163,.35);}
+.huge{font-size:clamp(38px,12vw,76px);}
+.big{font-size:clamp(28px,8.5vw,52px);}
+.sub{font-size:clamp(15px,4.5vw,20px);font-weight:600;line-height:1.45;}
+.tiny{font-size:13px;font-weight:600;opacity:.7;}
+.emoji{font-size:clamp(58px,21vw,118px);line-height:1;filter:drop-shadow(0 6px 10px rgba(255,79,163,.4));}
+.btn{border:none;cursor:pointer;font-family:'Fredoka';font-weight:700;font-size:clamp(16px,5vw,22px);color:#fff;background:linear-gradient(180deg,var(--pink2),var(--pink));padding:16px 30px;border-radius:999px;box-shadow:0 7px 0 #d62e80,0 12px 26px rgba(255,79,163,.45);transition:transform .08s,box-shadow .08s;letter-spacing:.3px;}
+.btn:active{transform:translateY(5px);box-shadow:0 2px 0 #d62e80,0 6px 14px rgba(255,79,163,.4);}
+.btn.lav{background:linear-gradient(180deg,#D9C2FF,var(--lav));box-shadow:0 7px 0 #8a5fd6,0 12px 26px rgba(201,167,255,.5);}
+.btn.gold{background:linear-gradient(180deg,#FFDD7A,var(--gold));box-shadow:0 7px 0 #d69a00;color:#6e2b5e;}
+.card{background:rgba(255,255,255,.7);border:2px solid #fff;border-radius:22px;padding:18px 16px;box-shadow:0 10px 30px rgba(255,79,163,.18);backdrop-filter:blur(4px);}
+.bar{width:min(82vw,420px);height:28px;border-radius:999px;background:rgba(255,255,255,.6);overflow:hidden;border:3px solid #fff;box-shadow:0 6px 18px rgba(255,79,163,.25);}
+.bar>i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--pink2),var(--lav));}
+.pct{font-family:'Pacifico';font-size:32px;color:var(--hot);}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;width:min(86vw,360px);}
+.cell{aspect-ratio:1;border-radius:18px;background:rgba(255,255,255,.7);border:3px solid #fff;display:flex;align-items:center;justify-content:center;font-size:38px;cursor:pointer;transition:.12s;box-shadow:0 5px 14px rgba(255,79,163,.15);}
+.cell.sel{border-color:var(--hot);background:#FFE3F1;transform:scale(.93);}
+.dial{font-family:'Pacifico';font-size:clamp(42px,15vw,92px);color:var(--hot);}
+.tapzone{font-size:clamp(86px,28vw,150px);cursor:pointer;line-height:1;}
+.tapzone:active{transform:scale(.8) rotate(-8deg);}
+.counter{font-family:'Pacifico';font-size:clamp(40px,12vw,76px);color:var(--lav);}
+.shake{animation:shk .25s;}
+@keyframes shk{0%,100%{transform:translate(0,0);}25%{transform:translate(-7px,3px);}50%{transform:translate(7px,-3px);}75%{transform:translate(-4px,-4px);}}
+.opts{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;width:min(88vw,380px);}
+.opt{border-radius:20px;padding:18px 8px;cursor:pointer;border:3px solid #fff;transition:.12s;display:flex;flex-direction:column;gap:8px;align-items:center;font-weight:700;color:#fff;box-shadow:0 8px 20px rgba(255,79,163,.22);}
+.opt:active{transform:scale(.93);}
+.opt .ic{font-size:42px;line-height:1;}
+.o1{background:linear-gradient(135deg,#FF8FC7,#FF4FA3);}
+.o2{background:linear-gradient(135deg,#E7DCFF,#C9A7FF);color:#5b3b8a;}
+.o3{background:linear-gradient(135deg,#BDE3FF,#7EC4FF);color:#23527c;}
+.o4{background:linear-gradient(135deg,#FFE08A,#FFB84F);color:#7a4d00;}
+.pickrow{display:flex;align-items:center;gap:8px;justify-content:center;}
+.pickrow .lab{font-weight:700;font-size:13px;width:74px;text-align:right;opacity:.8;}
+.pill{border:3px solid #fff;background:rgba(255,255,255,.7);border-radius:14px;padding:8px 10px;font-size:26px;cursor:pointer;transition:.1s;box-shadow:0 4px 10px rgba(255,79,163,.15);}
+.pill.on{border-color:var(--hot);background:#FFE3F1;transform:scale(.94);}
+.wheelwrap{position:relative;width:min(74vw,290px);aspect-ratio:1;}
+.pointer{position:absolute;top:-6px;left:50%;transform:translateX(-50%);font-size:34px;z-index:3;filter:drop-shadow(0 2px 3px rgba(0,0,0,.25));}
+.wheel{width:100%;height:100%;border-radius:50%;border:8px solid #fff;box-shadow:0 12px 30px rgba(255,79,163,.35),inset 0 0 0 4px var(--gold);background:conic-gradient(var(--pink) 0 45deg,var(--lav) 45deg 90deg,var(--baby) 90deg 135deg,var(--gold) 135deg 180deg,var(--pink2) 180deg 225deg,#FFB3D9 225deg 270deg,#D9C2FF 270deg 315deg,#B3E0FF 315deg 360deg);transition:transform 4.3s cubic-bezier(.15,.7,.1,1);position:relative;}
+.wheel span{position:absolute;top:50%;left:50%;font-size:24px;transform-origin:0 0;}
+.popgrid{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;width:min(88vw,360px);}
+.ph{aspect-ratio:1;display:flex;align-items:center;justify-content:center;font-size:30px;cursor:pointer;transition:.1s;}
+.ph:active{transform:scale(.7);}
+.mac{position:relative;width:min(78vw,360px);}
+.mac .lid{position:relative;width:100%;aspect-ratio:16/10;border-radius:16px 16px 4px 4px;background:var(--macColor,#e8ddc8);border:3px solid #fff;display:flex;align-items:center;justify-content:center;overflow:hidden;box-shadow:0 14px 34px rgba(255,79,163,.3),inset 0 0 30px rgba(0,0,0,.12);transition:background .4s;}
+.mac .screen{width:90%;height:84%;border-radius:8px;background:linear-gradient(135deg,#FFD6EC,#E3D2FF);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;border:1px solid rgba(255,255,255,.6);}
+.mac .screen b{font-family:'Pacifico';font-size:clamp(13px,4.5vw,20px);color:var(--hot);}
+.mac .screen span{font-size:clamp(26px,8vw,40px);}
+.mac .base{width:112%;margin-left:-6%;height:14px;background:linear-gradient(#fff,#e6c6da);border-radius:0 0 14px 14px;position:relative;box-shadow:0 8px 18px rgba(255,79,163,.3);}
+.mac .base:before{content:"";position:absolute;left:50%;top:0;transform:translateX(-50%);width:22%;height:6px;background:#f3b6d6;border-radius:0 0 8px 8px;}
+.swatches{display:flex;gap:13px;flex-wrap:wrap;justify-content:center;}
+.sw{width:54px;height:54px;border-radius:50%;border:3px solid #fff;cursor:pointer;position:relative;transition:.15s;box-shadow:0 5px 14px rgba(255,79,163,.25);}
+.sw:active{transform:scale(.9);}
+.sw.on{border-color:var(--hot);box-shadow:0 0 0 4px var(--blush),0 5px 14px rgba(255,79,163,.3);transform:scale(1.08);}
+.sw small{position:absolute;top:60px;left:50%;transform:translateX(-50%);font-size:11px;font-weight:700;white-space:nowrap;color:var(--plum);}
+.line{animation:lineIn .6s ease both;font-weight:600;}
+@keyframes lineIn{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:translateY(0);}}
+.keepcard{position:relative;background:linear-gradient(180deg,#fff,#FFF4FA);border:3px solid var(--pink);border-radius:26px;padding:30px 22px 22px;max-width:360px;width:90vw;box-shadow:0 16px 40px rgba(255,79,163,.3),inset 0 0 0 8px #fff,inset 0 0 0 11px var(--gold);text-align:center;}
+.kbow{position:absolute;top:-26px;left:50%;transform:translateX(-50%);font-size:46px;filter:drop-shadow(0 4px 6px rgba(255,79,163,.4));}
+.keyebrow{letter-spacing:3px;font-weight:700;color:var(--lav);font-size:12px;margin-top:6px;}
+.kname{font-family:'Pacifico';font-size:clamp(44px,15vw,72px);color:var(--hot);margin:0;line-height:1;}
+.kgift{font-weight:700;color:var(--plum);margin-top:2px;font-size:14px;}
+.kfrom{margin-top:12px;font-weight:600;opacity:.7;font-size:13px;}
+.kgrats{font-family:'Pacifico';color:var(--hot);margin-top:8px;font-size:19px;}
+.creds{display:flex;flex-wrap:wrap;gap:7px;justify-content:center;margin-top:6px;}
+.creds div{background:var(--blush);border-radius:999px;padding:6px 14px;font-weight:700;font-size:14px;color:var(--plum);}
+.confetti{position:fixed;top:-30px;z-index:5;pointer-events:none;animation:fall linear forwards;}
+@keyframes fall{to{transform:translateY(112vh) rotate(720deg);opacity:.9;}}
+.flt{position:fixed;z-index:6;font-family:'Pacifico';font-size:32px;color:var(--hot);pointer-events:none;animation:up 1.1s ease-out forwards;}
+@keyframes up{0%{opacity:1;transform:translateY(0) scale(.6);}100%{opacity:0;transform:translateY(-130px) scale(1.3);}}
+.spark{position:fixed;z-index:8;pointer-events:none;font-size:20px;transform:translate(-50%,-50%);animation:sp .7s ease-out forwards;}
+@keyframes sp{0%{opacity:1;transform:translate(-50%,-50%) scale(.4) rotate(0);}100%{opacity:0;transform:translate(-50%,-150%) scale(1.3) rotate(40deg);}}
+.progress{position:fixed;top:9px;left:50%;transform:translateX(-50%);z-index:9;display:flex;gap:4px;}
+.progress i{width:7px;height:7px;border-radius:50%;background:rgba(255,79,163,.25);transition:.3s;}
+.progress i.done{background:var(--hot);box-shadow:0 0 7px var(--pink);}
+#mtog{position:fixed;top:8px;left:10px;z-index:10;border:none;background:rgba(255,255,255,.75);border-radius:50%;width:40px;height:40px;font-size:18px;box-shadow:0 4px 10px rgba(255,79,163,.3);cursor:pointer;}
+@media (prefers-reduced-motion: reduce){.blob,.shake,.stage.active,.flt,.bgemoji{animation:none;}}
+</style>
+</head>
+<body>
+<div class="bgwrap" id="bg"><div class="blob a"></div><div class="blob b"></div><div class="blob c"></div></div>
+<button id="mtog" onclick="toggleMusic()">🎵</button>
+<div class="progress" id="prog"></div>
+<div id="app"></div>
+<script>
+/* ===================== CONFIG — EDIT THIS ===================== */
+const NAME = "DANA";                              // din systerdotter
+const MOM  = "Faten";                             // Danas mamma
+const SENDERS = ["Abbe","Madde","Faten","Sabah"]; // bara namn
+const MESSAGE = [                                 // quiet message — dina ord, kort & tungt
+  "Dana 🤍",
+  "jag har känt dig sen du var pytteliten.",
+  "mjölken, promenaderna, allt.",
+  "nu står du här — student. 🎓",
+  "jag är så stolt att det nästan gör ont.",
+  "gå ut och ta världen. den är din.",
+  "älskar dig, alltid.",
+  "— Abbe"
+];
+/* ============================================================== */
+
+const app=document.getElementById('app'),prog=document.getElementById('prog');
+const TOTAL=16; let macColor="#e8ddc8", finalColor=null, quiet=false;
+function vibe(ms){try{navigator.vibrate&&navigator.vibrate(ms);}catch(e){}}
+function dots(d){prog.innerHTML=Array.from({length:TOTAL},(_,i)=>`<i class="${i<d?'done':''}"></i>`).join('');}
+function show(html){app.innerHTML=`<div class="stage active">${html}</div>`;}
+function go(fn){vibe(20);fn();}
+const GE=["💖","🎀","✨","💕","🌸","💗","⭐","🦄","💅","🛍️","🩷"];
+function boom(n=80){for(let i=0;i<n;i++){const c=document.createElement('div');c.className='confetti';c.textContent=GE[Math.random()*GE.length|0];c.style.left=Math.random()*100+'vw';c.style.animationDuration=(2.6+Math.random()*2.6)+'s';c.style.animationDelay=(Math.random()*.8)+'s';c.style.fontSize=(18+Math.random()*26)+'px';document.body.appendChild(c);setTimeout(()=>c.remove(),6200);}}
+function floatText(x,y,t){const f=document.createElement('div');f.className='flt';f.textContent=t;f.style.left=(x-20)+'px';f.style.top=(y-20)+'px';document.body.appendChild(f);setTimeout(()=>f.remove(),1100);}
+document.addEventListener('pointerdown',e=>{if(quiet)return;const s=document.createElement('div');s.className='spark';s.textContent=GE[Math.random()*5|0];s.style.left=e.clientX+'px';s.style.top=e.clientY+'px';document.body.appendChild(s);setTimeout(()=>s.remove(),700);});
+(function(){const E=["🎀","💖","✨","🌸","🩷"];for(let i=0;i<9;i++){const b=document.createElement('div');b.className='bgemoji';b.textContent=E[i%E.length];b.style.left=(Math.random()*100)+'vw';b.style.animationDuration=(9+Math.random()*9)+'s';b.style.animationDelay=(-Math.random()*9)+'s';document.getElementById('bg').appendChild(b);}})();
+
+/* ---------- soft music-box lullaby (synth, self-contained) ---------- */
+let actx,master,musicOn=true,seqTimer=null,step=0;
+const MEL=[523.25,659.25,783.99,659.25, 880.00,783.99,659.25,523.25, 587.33,659.25,783.99,880.00, 783.99,659.25,587.33,523.25];
+const BASS=[130.81,164.81,196.00,146.83];
+function startAudio(){try{if(!actx){actx=new (window.AudioContext||window.webkitAudioContext)();master=actx.createGain();master.gain.value=0;master.connect(actx.destination);}if(actx.state==='suspended')actx.resume();master.gain.cancelScheduledValues(actx.currentTime);master.gain.linearRampToValueAtTime(musicOn?0.06:0,actx.currentTime+0.6);if(!seqTimer)seqTimer=setInterval(tick,310);}catch(e){}}
+function blip(f,dur,vol,type){const o=actx.createOscillator(),g=actx.createGain();o.type=type||'triangle';o.frequency.value=f;const t=actx.currentTime;g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(vol,t+0.02);g.gain.exponentialRampToValueAtTime(0.0008,t+dur);o.connect(g);g.connect(master);o.start(t);o.stop(t+dur+0.05);}
+function tick(){if(!actx||!musicOn)return;blip(MEL[step%MEL.length],0.5,0.5,'triangle');if(step%4===0)blip(BASS[(step/4)%BASS.length],0.95,0.32,'sine');step++;}
+function toggleMusic(){musicOn=!musicOn;const b=document.getElementById('mtog');if(b)b.textContent=musicOn?'🎵':'🔇';if(!actx){startAudio();return;}master.gain.cancelScheduledValues(actx.currentTime);master.gain.linearRampToValueAtTime(musicOn?0.06:0,actx.currentTime+0.3);}
+function softMusic(on){if(actx&&master){master.gain.cancelScheduledValues(actx.currentTime);master.gain.linearRampToValueAtTime(on?0.032:(musicOn?0.06:0),actx.currentTime+0.7);}}
+
+/* 1 INTRO */
+function s0(){dots(0);show(`
+  <div class="emoji">🎀</div>
+  <h1 class="huge">hi bestie<br>${NAME} 🩷</h1>
+  <p class="sub">nån la en QR i ditt studentkort ✨<br>du scannade. iconic. slay 💅</p>
+  <p class="tiny">(japp det här är din present 🎁 — kör genom era't)</p>
+  <button class="btn" onclick="startAudio();go(s1)">visa min present 💖</button>`);}
+
+/* 2 TROLL LOADING */
+function s1(){dots(1);show(`
+  <h1 class="big">laddar din present…</h1>
+  <div class="bar"><i id="fill"></i></div><div class="pct" id="pctv">0%</div>
+  <p class="sub" id="msg">vänta lite gumman 🙏💕</p>`);
+  const fill=document.getElementById('fill'),pv=document.getElementById('pctv'),msg=document.getElementById('msg');
+  let p=0,dr=false;const iv=setInterval(()=>{p+=dr?1.6:(3+Math.random()*5);
+    if(!dr&&p>=98){p=11;dr=true;vibe(120);msg.textContent="💀 lol nej. börja om bestie.";}
+    if(p>=100){p=100;clearInterval(iv);pv.textContent="100%";fill.style.width="100%";msg.innerHTML="okej den laddade 😌 men FÖRST…";
+      app.querySelector('.stage').insertAdjacentHTML('beforeend',`<button class="btn lav" onclick="go(sVibe)">fortsätt 🎀</button>`);return;}
+    fill.style.width=p+'%';pv.textContent=Math.floor(p)+'%';},90);}
+
+/* 3 VIBE CHECK */
+function sVibe(){dots(2);show(`
+  <h1 class="big">vibe check 💅<br>vilken är din era?</h1>
+  <div class="opts" id="o"></div>`);
+  const O=[{c:"o1",ic:"🎀",n:"Coquette"},{c:"o2",ic:"🤍",n:"Clean girl"},{c:"o3",ic:"💿",n:"Y2K"},{c:"o4",ic:"🖤",n:"Mob wife"}];
+  const o=document.getElementById('o');
+  O.forEach(x=>{const d=document.createElement('div');d.className='opt '+x.c;d.innerHTML=`<div class="ic">${x.ic}</div>${x.n}`;
+    d.onclick=()=>{vibe(30);boom(18);show(`<div class="emoji">${x.ic}</div><h1 class="big">${x.n} era<br>confirmed ✨</h1><p class="sub">delulu är solulu — du är så slay 💅</p><button class="btn" onclick="go(s2)">tack jag vet 💖</button>`);};o.appendChild(d);});}
+
+/* 4 CAPTCHA */
+function s2(){dots(3);const items=["🎀","💅","🎀","🐸","🎀","💖","🎀","🛍️","✨"];
+  show(`<h1 class="big">verifiera att du<br>är THAT girl 💅</h1><p class="sub">tryck på ALLA rosetter 🎀</p><div class="grid" id="grid"></div><button class="btn" id="ok" disabled style="opacity:.4">jag är iconic ✅</button>`);
+  const grid=document.getElementById('grid'),ok=document.getElementById('ok');let need=items.filter(x=>x==="🎀").length,got=0;
+  items.forEach(x=>{const c=document.createElement('div');c.className='cell';c.textContent=x;
+    c.onclick=()=>{if(c.classList.contains('sel'))return;vibe(15);if(x==="🎀"){c.classList.add('sel');got++;}else{c.style.transform="rotate(18deg)";setTimeout(()=>c.style.transform="",200);}if(got>=need){ok.disabled=false;ok.style.opacity=1;}};grid.appendChild(c);});
+  ok.onclick=()=>go(s67);}
+
+/* 5 SIX SEVEN */
+function s67(){dots(4);show(`<h1 class="big">snabb fråga 🤭</h1><p class="sub">vad är <b style="color:var(--lav)">6 + 1</b> bestie?</p><div class="tapzone" id="z">🙌</div><p class="sub" id="m">tryck för att svara…</p>`);
+  const z=document.getElementById('z'),m=document.getElementById('m');let n=0;
+  z.onclick=()=>{n++;vibe(15);const r=z.getBoundingClientRect();floatText(r.left+r.width/2,r.top+r.height/2,Math.random()<.5?"6️⃣7️⃣":"SIX SEVEN");z.textContent=n%2?"🤚":"🙌";
+    if(n===1)m.innerHTML="SIX… 🙌";if(n===3)m.innerHTML="…SEVEN 🤚";
+    if(n>=6){m.innerHTML="🙌🤚 <b style='color:var(--hot)'>6 7</b> 🤚🙌 ja precis";if(!document.getElementById('nx'))app.querySelector('.stage').insertAdjacentHTML('beforeend',`<button id="nx" class="btn" onclick="go(sMath)">ja 6 7 🎀</button>`);}};}
+
+/* 6 GIRL MATH */
+function sMath(){dots(5);show(`<h1 class="big">girl math tid 🛍️💅</h1><p class="sub">du som shopaholic fattar direkt 💖</p><div class="card" id="cc" style="max-width:340px;text-align:left;font-weight:600"></div><button class="btn gold" id="calc">räkna ut (girl math) 🧮</button>`);
+  const cc=document.getElementById('cc'),calc=document.getElementById('calc');
+  const L=["💻 en MacBook Air = typ 13 000 kr","📅 håller i 5 år = 7 kr/dagen","🧋 7 kr = mindre än en bubble tea","➗ alltså SPARAR du pengar","✅ ALLTSÅ: den är typ GRATIS 💖","(detta är vetenskap. du vet 🛍️)"];
+  let i=0;calc.onclick=()=>{if(i<L.length){cc.innerHTML+=`<div style="margin:4px 0">${L[i]}</div>`;vibe(20);i++;}if(i===L.length){calc.outerHTML=`<button class="btn" onclick="go(sMom)">SO TRUE 🛍️</button>`;}};}
+
+/* 7 MAMAHOLIC */
+function sMom(){dots(6);show(`<div class="emoji">📞</div><h1 class="big">vänta… 👀</h1><p class="sub">hur många gånger ringde du<br>mamma ${MOM} idag?</p><div class="tapzone" id="ph">📱</div><div class="counter" id="c">0</div><p class="sub" id="m">tryck för att ringa 💕</p>`);
+  const ph=document.getElementById('ph'),c=document.getElementById('c'),m=document.getElementById('m');let n=0;
+  ph.onclick=()=>{n+=Math.ceil(1+Math.random()*5);vibe(12);c.textContent=n;const r=ph.getBoundingClientRect();floatText(r.left+r.width/2,r.top,"📞💕");
+    if(n>=40){ph.onclick=null;c.textContent="47";vibe(120);m.innerHTML=`<b style="color:var(--hot)">mamaholic certified 💖</b><br>${MOM} älskar dig så mkt`;app.querySelector('.stage').insertAdjacentHTML('beforeend',`<button class="btn" onclick="go(sBow)">mamas tjej 4ever 💞</button>`);}};}
+
+/* 8 BUILD-A-BOW */
+function sBow(){dots(7);show(`
+  <h1 class="big">designa din rosett 🎀</h1>
+  <p class="sub">coquette era kräver det ✨</p>
+  <svg viewBox="0 0 200 150" width="170" style="filter:drop-shadow(0 8px 14px rgba(255,79,163,.35))">
+    <g id="bowg" fill="#FF4FA3" stroke="#fff" stroke-width="3" stroke-linejoin="round">
+      <path d="M88 72 L66 142 L100 112 L134 142 L112 72 Z"/>
+      <ellipse cx="60" cy="64" rx="44" ry="36" transform="rotate(-18 60 64)"/>
+      <ellipse cx="140" cy="64" rx="44" ry="36" transform="rotate(18 140 64)"/>
+      <circle cx="100" cy="66" r="20"/>
+    </g>
+    <ellipse cx="98" cy="58" rx="9" ry="6" fill="#fff" opacity=".5"/>
+  </svg>
+  <p class="sub">välj färg 🎨</p>
+  <div class="swatches" id="bc"></div>
+  <button class="btn" id="pin" disabled style="opacity:.4">pin it 📌</button>`);
+  const cols=["#FF4FA3","#C9A7FF","#A7D8FF","#FFC93C","#FF5C7A","#FFE6F2"];
+  const bc=document.getElementById('bc'),bowg=document.getElementById('bowg'),pin=document.getElementById('pin');
+  cols.forEach(c=>{const s=document.createElement('div');s.className='sw';s.style.background=c;
+    s.onclick=()=>{vibe(20);[...bc.children].forEach(x=>x.classList.remove('on'));s.classList.add('on');bowg.setAttribute('fill',c);pin.disabled=false;pin.style.opacity=1;};bc.appendChild(s);});
+  pin.onclick=()=>{vibe(40);boom(16);go(sDress);};}
+
+/* 9 DRESS-UP / GRWM + LABUBU BLIND BOX */
+function sDress(){dots(8);show(`
+  <h1 class="big">GRWM för studenten 💄</h1>
+  <p class="sub">bygg din vibe bestie ✨</p>
+  <div class="card" id="look" style="font-size:34px;min-height:56px;display:flex;gap:8px;align-items:center;justify-content:center">👧</div>
+  <div id="rows" style="display:flex;flex-direction:column;gap:9px"></div>
+  <button class="btn lav" id="next" disabled style="opacity:.4">öppna din blind box 🎁</button>`);
+  const R=[{lab:"drink",opts:["🍵","🧋","🥤"]},{lab:"väska",opts:["👜","🎀","💼"]},{lab:"finish",opts:["💅","🕶️","💎"]}];
+  const rows=document.getElementById('rows'),look=document.getElementById('look'),next=document.getElementById('next');
+  const chosen={};
+  R.forEach((r,ri)=>{const row=document.createElement('div');row.className='pickrow';row.innerHTML=`<span class="lab">${r.lab}</span>`;
+    r.opts.forEach(e=>{const p=document.createElement('div');p.className='pill';p.textContent=e;
+      p.onclick=()=>{vibe(15);[...row.querySelectorAll('.pill')].forEach(x=>x.classList.remove('on'));p.classList.add('on');chosen[ri]=e;
+        look.innerHTML='👧 '+Object.values(chosen).join(' ');if(Object.keys(chosen).length>=3){next.disabled=false;next.style.opacity=1;}};row.appendChild(p);});
+    rows.appendChild(row);});
+  next.onclick=()=>{vibe(30);show(`<h1 class="big">blind box time 🎁</h1><p class="sub">tryck för att öppna din Labubu 👀</p><div class="tapzone" id="bx">🎁</div><p class="tiny">(alla älskar Labubu rn 🩷)</p>`);
+    const bx=document.getElementById('bx');let t=0;
+    bx.onclick=()=>{t++;vibe(20);bx.classList.add('shake');setTimeout(()=>bx.classList.remove('shake'),250);
+      if(t>=3){const L=[["🩷","Sakura Labubu"],["🍓","Strawberry Labubu"],["🧋","Boba Labubu"],["⭐","Sparkle Labubu"],["🦄","Unicorn Labubu"],["🍵","Matcha Labubu"]];const p=L[Math.random()*L.length|0];boom(40);vibe(120);
+        show(`<div class="emoji">${p[0]}</div><h1 class="big">DU FICK:<br>${p[1]} 😍</h1><p class="sub">SÅ rare omg 💖 (den är din)</p><button class="btn" onclick="go(sWheel)">obsessed 🩷</button>`);}};};}
+
+/* 10 SPIN WHEEL */
+function sWheel(){dots(9);show(`<h1 class="big">snurra lyckohjulet 🎡</h1><p class="sub">vinn: aura · robux · ${MOM}s kort 💳 · DIN PRESENT 🎁</p><div class="wheelwrap"><div class="pointer">🎀</div><div class="wheel" id="w"></div></div><button class="btn gold" id="spin">SNURRA 🎡</button>`);
+  const w=document.getElementById('w'),spin=document.getElementById('spin');const E=["💸","🛍️","📞","👑","💅","🎁","✨","🦄"];
+  E.forEach((e,i)=>{const s=document.createElement('span');s.textContent=e;s.style.transform=`rotate(${i*45+22.5}deg) translate(0,-110px)`;w.appendChild(s);});
+  let spun=false;spin.onclick=()=>{if(spun)return;spun=true;vibe(40);const deg=360*5+Math.floor(Math.random()*360);w.style.transform=`rotate(${deg}deg)`;
+    setTimeout(()=>{boom(40);vibe(120);show(`<div class="emoji">🎁</div><h1 class="huge" style="color:var(--hot)">DIN<br>PRESENT!</h1><p class="sub">hjulet bestämde. ödet vill det 💫</p><button class="btn" onclick="go(s4)">öppna 🎀</button>`);},4400);};}
+
+/* 11 SEPHORA BAIT */
+function s4(){dots(10);show(`<div class="emoji">💄</div><h1 class="huge" style="color:var(--hot)">DU VANN<br>10 000 KR<br>PÅ SEPHORA</h1><p class="sub">tryck för att shoppa loss 🛍️🛍️</p><button class="btn gold" onclick="go(bait)">SHOPPA NU 💖</button>`);}
+function bait(){vibe([60,40,60]);show(`<div class="emoji">💀</div><h1 class="huge">nähä</h1><p class="sub">trodde du verkligen på det?? 😭<br>(jag vet du skulle spendera allt direkt 🛍️)</p><p class="tiny">men relax — din riktiga present slår Sephora 💅</p><button class="btn lav" onclick="go(s5)">okej okej 🎀</button>`);}
+
+/* 12 POP HEARTS */
+function s5(){dots(11);const total=20;show(`<h1 class="big">poppa alla hjärtan 💖<br>för att låsa upp!</h1><div class="counter" id="cnt">0 / ${total}</div><div class="popgrid" id="pg"></div>`);
+  const pg=document.getElementById('pg'),cnt=document.getElementById('cnt');let got=0;const hs=["💖","💕","💗","🩷","💞"];
+  for(let i=0;i<total;i++){const h=document.createElement('div');h.className='ph';h.textContent=hs[i%hs.length];
+    h.onclick=()=>{if(!h.textContent)return;vibe(12);h.textContent="";got++;cnt.textContent=`${got} / ${total}`;boom(4);if(got>=total){vibe(150);go(s6);}};pg.appendChild(h);}}
+
+/* 13 BUILD-UP */
+function s6(){dots(12);show(`<div class="emoji">🥹</div><h1 class="big">okej okej… fr nu 🩷</h1><p class="sub" id="bu">laddar din RIKTIGA present…</p>`);
+  const bu=document.getElementById('bu');const L=["laddar din RIKTIGA present…","den är faktiskt så cute 👀","screenshot detta sen 📸","3…","2…","1…"];
+  let i=0;const iv=setInterval(()=>{i++;if(i<L.length){bu.textContent=L[i];vibe(30);}else{clearInterval(iv);go(reveal);}},800);}
+
+/* 14 REVEAL + PICKER */
+function reveal(){dots(13);boom(150);vibe([100,50,100,50,200]);show(`
+  <h1 class="huge" style="color:var(--hot)">GRATTIS<br>${NAME}! 🎓</h1>
+  <div class="mac"><div class="lid" id="lid" style="--macColor:${macColor}"><div class="screen"><span>🎀</span><b>STUDENT ${new Date().getFullYear()}</b></div></div><div class="base"></div></div>
+  <p class="sub">du fick en <b style="color:var(--lav)">MacBook Air</b> 💻💖</p>
+  <h1 class="big" style="margin-top:2px">men VÄNTA — DU väljer färgen 🎨</h1>
+  <div class="swatches" id="sw" style="margin-bottom:20px"></div>
+  <button class="btn" id="claim" disabled style="opacity:.4">det här är min färg ✅</button>`);
+  const colors=[{n:"Starlight",c:"#e8ddc8"},{n:"Sky Blue",c:"#b9cfe0"},{n:"Silver",c:"#d6d6da"},{n:"Midnight",c:"#2e2e38"}];
+  const swEl=document.getElementById('sw'),lid=document.getElementById('lid'),claim=document.getElementById('claim');let chosen=null;
+  colors.forEach(col=>{const s=document.createElement('div');s.className='sw';s.style.background=col.c;s.innerHTML=`<small>${col.n}</small>`;
+    s.onclick=()=>{vibe(25);[...swEl.children].forEach(x=>x.classList.remove('on'));s.classList.add('on');lid.style.setProperty('--macColor',col.c);chosen=col.n;macColor=col.c;claim.disabled=false;claim.style.opacity=1;};swEl.appendChild(s);});
+  claim.onclick=()=>{finalColor=chosen;go(sMsg);};}
+
+/* 15 QUIET PERSONAL MESSAGE */
+function sMsg(){dots(14);quiet=true;softMusic(true);document.body.classList.add('calm');
+  show(`<div id="msg" style="display:flex;flex-direction:column;gap:13px;max-width:340px"></div>`);
+  const box=document.getElementById('msg');let i=0;
+  const iv=setInterval(()=>{
+    if(i<MESSAGE.length){const p=document.createElement('p');p.className='line';p.innerHTML=MESSAGE[i];
+      const first=(i===0),last=(i===MESSAGE.length-1);
+      p.style.fontSize=first?'clamp(30px,9vw,46px)':'clamp(16px,5vw,21px)';
+      p.style.fontFamily=(first||last)?"'Pacifico',cursive":"'Fredoka',sans-serif";
+      p.style.color=first?'var(--hot)':'var(--plum)';box.appendChild(p);vibe(15);i++;}
+    else{clearInterval(iv);box.insertAdjacentHTML('afterend',`<button class="btn" style="margin-top:18px" onclick="leaveQuiet();go(done)">💌</button>`);}
+  },950);}
+function leaveQuiet(){quiet=false;softMusic(false);document.body.classList.remove('calm');}
+
+/* 16 KEEPSAKE CARD */
+function done(){dots(16);boom(120);vibe(200);show(`
+  <div class="keepcard">
+    <div class="kbow">🎀</div>
+    <div class="keyebrow">★ STUDENT ${new Date().getFullYear()} ★</div>
+    <h1 class="kname">${NAME}</h1>
+    <div class="mac" style="width:min(46vw,170px);margin:8px auto 2px"><div class="lid" style="--macColor:${macColor}"><div class="screen"><span>💻</span><b>${finalColor||''}</b></div></div><div class="base"></div></div>
+    <div class="kgift">MacBook Air · ${finalColor||'din färg'}</div>
+    <div class="kfrom">med all kärlek från</div>
+    <div class="creds">${SENDERS.map(n=>`<div>${n}</div>`).join('')}</div>
+    <div class="kgrats">grattis vår tjej 🤍</div>
+  </div>
+  <p class="sub" style="margin-top:14px">ta en <b>screenshot</b> 📸 & visa Abbe<br>så beställs den 🚀</p>`);}
+
+dots(0);s0();
+</script>
+</body>
+</html>
